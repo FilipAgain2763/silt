@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Item List</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Item List</h1>
+  <ul id="itemList"></ul>
+
+  <script>
+fetch('items.json')
+  .then(response => response.json())
+  .then(items => {
+    const listElement = document.getElementById('itemList');
+    items.forEach(item => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.textContent = item.name;
+      a.target = "_blank";
+      li.appendChild(a);
+      listElement.appendChild(li);
+    });
+  });
+  </script>
+</body>
+</html>
