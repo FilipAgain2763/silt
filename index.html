@@ -8,10 +8,19 @@
       font-family: 'Segoe UI', Arial, sans-serif;
       margin: 2em;
       background: #f7f9fc;
+      color: #222;
+      transition: background 0.3s, color 0.3s;
     }
     h1 {
       color: #333;
       margin-bottom: 1em;
+    }
+    .dark-mode {
+      background: #181a20;
+      color: #eee;
+    }
+    .dark-mode h1 {
+      color: #fff;
     }
     ul {
       list-style: none;
@@ -24,8 +33,13 @@
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.2s, background 0.3s, color 0.3s;
       padding: 12px 18px;
+    }
+    body.dark-mode li {
+      background: #22232b;
+      color: #eee;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     li:hover {
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
@@ -37,31 +51,72 @@
       font-weight: 500;
       transition: color 0.2s;
     }
+    body.dark-mode a {
+      color: #90caf9;
+    }
     a:hover {
       color: #0d47a1;
       text-decoration: underline;
     }
+    body.dark-mode a:hover {
+      color: #42a5f5;
+    }
+    #toggle-dark {
+      display: block;
+      margin: 0 auto 2em auto;
+      padding: 8px 16px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.2s, color 0.2s;
+    }
+    #toggle-dark:hover {
+      background: #0d47a1;
+    }
+    body.dark-mode #toggle-dark {
+      background: #22232b;
+      color: #90caf9;
+    }
+    body.dark-mode #toggle-dark:hover {
+      background: #33344a;
+    }
   </style>
 </head>
 <body>
+  <button id="toggle-dark">Switch to Dark Mode</button>
   <h1>Item List</h1>
   <ul id="itemList"></ul>
 
   <script>
-  fetch('items.json')
-    .then(response => response.json())
-    .then(items => {
-      const listElement = document.getElementById('itemList');
-      items.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = item.url;
-        a.textContent = item.name;
-        a.target = "_blank";
-        li.appendChild(a);
-        listElement.appendChild(li);
-      });
+    // Dark mode toggle logic
+    const darkToggle = document.getElementById('toggle-dark');
+    darkToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      if(document.body.classList.contains('dark-mode')) {
+        darkToggle.textContent = 'Switch to Light Mode';
+      } else {
+        darkToggle.textContent = 'Switch to Dark Mode';
+      }
     });
+
+    // Load items
+    fetch('items.json')
+      .then(response => response.json())
+      .then(items => {
+        const listElement = document.getElementById('itemList');
+        items.forEach(item => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = item.url;
+          a.textContent = item.name;
+          a.target = "_blank";
+          li.appendChild(a);
+          listElement.appendChild(li);
+        });
+      });
   </script>
 </body>
 </html>
